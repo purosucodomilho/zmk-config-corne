@@ -1,257 +1,85 @@
+/*
+ * Estou fazendo para teclado verde da China. O repositório é um genérico, é para servir pra todos.
+ * 
+ * 
+ * 
+ */
+
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/mouse.h>
+#include <dt-bindings/zmk/rgb.h>
 
-#define DEF 0
-#define NAV 1
-#define SYM 2
-#define ADJ 3
-#define EXTRA 4
+
+/ {
+  behaviors {
+    skq: sticky_key_quick_release {
+      compatible = "zmk,behavior-sticky-key";
+      label = "STICKY_KEY_QUICK_RELEASE";
+      #binding-cells = <1>;
+      bindings = <&kp>;
+      release-after-ms = <1000>;
+      quick-release;
+    };
+  };
+};
 
 / {
     behaviors {
-        hm: homerow_mods {
+        rars:pressticky {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_MODS";
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            quick_tap_ms = <0>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-
-            quick-tap-ms = <180>;
-            global-quick-tap;
-        };
-
-        para: para {
-            compatible = "zmk,behavior-tap-dance";
-            label = "PARA";
-            #binding-cells = <0>;
-            bindings = <&kp LEFT_PARENTHESIS>, <&kp RIGHT_PARENTHESIS>;
-        };
-
-        caps: caps {
-            compatible = "zmk,behavior-caps-word";
-            label = "CAPS";
-            #binding-cells = <0>;
-            continue-list = <MINUS BACKSPACE>;
-        };
-
-        paraless: paraless {
-            compatible = "zmk,behavior-mod-morph";
-            label = "PARALESS";
-            bindings = <&kp LEFT_PARENTHESIS>, <&kp LESS_THAN>;
-
-            #binding-cells = <0>;
-            mods = <(MOD_LSFT)>;
-        };
-
-        paragreat: paragreat {
-            compatible = "zmk,behavior-mod-morph";
-            label = "PARAGREAT";
-            bindings = <&kp RIGHT_PARENTHESIS>, <&kp GREATER_THAN>;
-
-            #binding-cells = <0>;
-            mods = <(MOD_LSFT)>;
+            flavor = "balanced";
+            tapping-term-ms = <190>;
+            bindings = <&kp>, <&skq>;
         };
     };
+};
 
-    macros {
-        browsertab: browsertab {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press>,
-                <&kp LCTRL>,
-                <&macro_tap>,
-                <&kp TAB>,
-                <&macro_release>,
-                <&kp LCTRL>;
-        };
 
-    };
-
-    combos {
-        compatible = "zmk,combos";
-
-        escape {
-            bindings = <&kp ESCAPE>;
-            key-positions = <13 29>;
-        };
-
-        delete {
-            bindings = <&kp DELETE>;
-            key-positions = <15 21>;
-        };
-
-        perc {
-            bindings = <&kp PERCENT>;
-            key-positions = <5 17>;
-        };
-
-        equal {
-            bindings = <&kp EQUAL>;
-            key-positions = <28 16>;
-        };
-
-        dollar {
-            bindings = <&kp DOLLAR>;
-            key-positions = <4 16>;
-        };
-
-        pound {
-            bindings = <&kp POUND>;
-            key-positions = <3 15>;
-        };
-
-        at {
-            bindings = <&kp AT>;
-            key-positions = <2 14>;
-        };
-
-        backslash {
-            bindings = <&kp BACKSLASH>;
-            key-positions = <26 14>;
-        };
-
-        copy {
-            bindings = <&kp K_COPY>;
-            key-positions = <28 27>;
-        };
-
-        paste {
-            bindings = <&kp K_PASTE>;
-            key-positions = <26 27>;
-        };
-
-        star {
-            bindings = <&kp STAR>;
-            key-positions = <8 20>;
-        };
-
-        slash {
-            bindings = <&kp SLASH>;
-            key-positions = <32 20>;
-        };
-
-        plus {
-            bindings = <&kp PLUS>;
-            key-positions = <7 19>;
-        };
-
-        minus {
-            bindings = <&kp KP_MINUS>;
-            key-positions = <31 19>;
-        };
-
-        underscore {
-            bindings = <&kp UNDER>;
-            key-positions = <30 18>;
-        };
-
-        leftbrack {
-            bindings = <&kp LEFT_BRACKET>;
-            key-positions = <31 32>;
-        };
-
-        rightbrack {
-            bindings = <&kp RIGHT_BRACKET>;
-            key-positions = <33 32>;
-        };
-
-        para-less {
-            bindings = <&paraless>;
-            key-positions = <20 19>;
-        };
-
-        para-great {
-            bindings = <&paragreat>;
-            key-positions = <20 21>;
-        };
-    };
-
-    //
+/ {
+    combos { compatible = "zmk,combos"; };
 
     keymap {
         compatible = "zmk,keymap";
 
-        DEF {
-            display-name = "Base";
-
-            // -----------------------------------------------------------------------------------------
-            // |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  |
-            // |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |
-            // |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  |
-            // | GUI | CTRL | SHFT | LWR | SPC |   | ENT | RSE  | BKSP | ALT | ESC |
-
+        default_layer {
             bindings = <
-&kp TAB    &kp Q  &kp W  &kp E     &kp R  &kp T        &kp Y    &kp U      &kp I          &kp O    &kp P     &kp BACKSPACE
-&kp LSHFT  &kp A  &kp S  &kp D     &kp F  &kp G        &kp H    &kp J      &kp K          &kp L    &kp SEMI  &kp SQT
-&kp LCTRL  &kp Z  &kp X  &kp C     &kp V  &kp B        &kp N    &kp M      &kp COMMA      &kp DOT  &kp FSLH  &kp RSHFT
-                         &kp LGUI  &mo 1  &kp SPACE    &kp RET  &lt 2 TAB  &kp LEFT_ALT
+                &kp TAB      &kp Q   &kp W   &kp E   &kp R   &kp T          &kp Y   &kp U   &kp I      &kp O   &kp P      &kp LBKT
+                &kp LALT     &kp A   &kp S   &kp D   &kp F   &kp G          &kp H   &kp J   &kp K      &kp L   &kp SEMI   &kp SINGLE_QUOTE
+                &kp LSHIFT   &kp Z   &kp X   &kp C   &kp V   &kp B          &kp N   &kp M   &kp COMMA  &kp DOT &kp SLASH  &sl 3
+               &mt LCTRL TAB   &rars LEFT_GUI RSHIFT   &lt 1 ENTER          &sl 2   &kp SPACE   &mt LCTRL BACKSPACE
             >;
         };
 
-        NAV {
-            display-name = "NavNum";
-
-            // -----------------------------------------------------------------------------------------
-            // |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
-            // | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-            // | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-            // | GUI | CTRL | SHFT | LWR | SPC |   | ENT | RSE  | BKSP | ALT | ESC |
-
+        lower_layer {
             bindings = <
-&trans  &kp N1  &kp N2    &kp N3       &kp N4           &kp N5           &kp N6   &kp N7        &kp N8        &kp N9        &kp N0  &trans
-&caps_word  &trans  &trans    &kp UP_ARROW  &browsertab      &kp PAGE_UP      &kp N0   &kp N4  &kp N5        &kp N6  &trans  &trans
-&trans  &trans  &kp LEFT  &kp DOWN      &kp RIGHT_ARROW  &kp PAGE_DOWN    &trans   &kp N1  &kp N2  &kp N3  &trans  &trans
-                          &kp LGUI      &trans           &kp SPACE        &kp RET  &trans        &trans
+&kp ESC &kp EXCL         &kp AT_SIGN   &kp POUND     &kp DOLLAR        &kp PERCENT         &kp CARET        &kp AMPERSAND      &kp ASTERISK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp BSPC
+&trans  &kp NUMBER_1     &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4      &kp NUMBER_5        &kp NUMBER_6     &kp NUMBER_7       &kp NUMBER_8  &kp NUMBER_9          &kp NUMBER_0           &kp MINUS
+&trans  &mkp LCLK        &mkp RCLK     &kp RA(Q)     &kp RIGHT_BRACKET &kp RIGHT_BRACE     &kp SEMI         &kp BSLH           &kp RA(BSLH)  &RA(RIGHT_BRACKET)    &trans                 &trans
+                                       &trans        &trans            &trans              &trans           &trans             &kp BACKSPACE
             >;
         };
 
-        SYM {
-            display-name = "Symbols";
-
-            // -----------------------------------------------------------------------------------------
-            // |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
-            // | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-            // | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-            //                    | GUI |     | SPC |   | ENT |     | ALT |
-
+       
+        raise_layer {
             bindings = <
-&trans  &kp EXCL  &kp AT          &kp HASH        &kp DLLR         &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LEFT_PARENTHESIS  &kp RPAR  &trans
-&trans  &trans    &trans          &kp UP_ARROW    &trans           &kp GRAVE    &kp MINUS  &kp EQUAL  &kp LBKT   &kp RBKT              &kp BSLH  &trans
-&trans  &trans    &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp TILDE    &kp UNDER  &kp PLUS   &kp LBRC   &kp RBRC              &kp PIPE  &trans
-                                  &kp LGUI        &trans           &kp SPACE    &kp RET    &trans     &trans
+                &kp TAB    &kp RA(Q)       &kp RA(W)       &kp UP      &kp MINUS    &kp PLUS             &kp &kp LBKT          &kp LS(LBKT)          &kp HOME    &kp PGUP             &kp RA(EQUAL)    &kp DELETE
+                &trans     &kp LS(GRAVE)   &kp LEFT        &kp DOWN    &kp RIGHT    &kp EQUAL            &kp SINGLE_QUOTE      &kp LS(SINGLE_QUOTE)  &kp END     &kp PGDN             &kp GRAVE        &trans      
+                &trans     &kp NUBS        &kp UNDERSCORE  &kp K_COPY  &kp K_PASTE  &kp LS(NUBS)         &kp C_PLAY_PAUSE      &kp C_PREVIOUS        &kp C_NEXT  &kp C_VOLUME_DOWN    &kp C_VOLUME_UP  &trans
+                                                           &trans      &kp LSHIFT   &trans               &trans                &trans                &trans
             >;
         };
 
-        ADJ {
-            display-name = "System";
+        function_layer {
             bindings = <
-&trans  &kp F1        &kp F2        &kp F3        &kp F4      &kp F5            &kp F6  &kp F7  &kp F8  &kp F9  &kp F10      &trans
-&trans  &kp F11       &kp F12       &trans        &trans      &studio_unlock            &trans  &trans  &trans  &trans  &trans       &trans
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_CLR  &bt BT_CLR_ALL    &trans  &trans  &trans  &trans  &bootloader  &trans
-                                    &trans        &trans      &trans            &trans  &trans  &trans
+                &trans   &kp F1     &kp F2            &kp F3            &kp F4            &kp F5            &kp F6            &kp F7         &kp F8         &kp F9         &kp F10           &trans
+                &trans   &kp F11    &kp F12           &trans            &trans            &trans            &trans            &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &rgb_ug RGB_OFF   &rgb_ug RGB_ON
+                &trans   &kp CAPS   &rgb_ug RGB_EFF   &rgb_ug RGB_EFR   &rgb_ug RGB_SPI   &rgb_ug RGB_BRI   &rgb_ug RGB_BRD   &trans         &trans         &bt BT_CLR     &trans            &trans
+                                                                    &trans     &trans     &trans            &trans     &trans     &trans
             >;
-        };
-        EXTRA {
-            display-name = "extra";
-            bindings = <
-&trans  &trans        &trans        &trans        &trans      &trans            &trans  &trans  &trans  &trans  &trans      &trans
-&trans  &trans       &trans       &trans        &trans      &trans            &trans  &trans  &trans  &trans  &trans       &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &bootloader  &trans
-                                    &trans        &trans      &trans            &trans  &trans  &trans
-            >;
-        };
-    };
-
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-
-        l3 {
-            if-layers = <1 2>;
-            then-layer = <3>;
         };
     };
 };
